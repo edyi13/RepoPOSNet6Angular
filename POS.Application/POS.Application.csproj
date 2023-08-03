@@ -8,11 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Commons\" />
-    <Folder Include="Dtos\" />
     <Folder Include="Extensions\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Mappers\" />
-    <Folder Include="Validators\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
@@ -26,7 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\POS.Domain\POS.Domain.csproj" />
     <ProjectReference Include="..\POS.Infraestructura\POS.Infrastructure.csproj" />
-    <ProjectReference Include="..\POS.Uitilities\POS.Uitilities.csproj" />
+    <ProjectReference Include="..\POS.Uitilities\POS.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

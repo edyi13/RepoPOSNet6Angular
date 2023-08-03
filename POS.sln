@@ -7,17 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{85DDA80B-857
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FDDD1768-9D2B-48AB-AA14-D60D6C5D5061}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Domain", "POS.Domain\POS.Domain.csproj", "{124354B4-9B43-4292-8DF0-084A1FFDD2EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Domain", "POS.Domain\POS.Domain.csproj", "{124354B4-9B43-4292-8DF0-084A1FFDD2EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Infrastructure", "POS.Infraestructura\POS.Infrastructure.csproj", "{8A56A65D-69B3-4BD4-B25A-A3B48D99900C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Infrastructure", "POS.Infraestructura\POS.Infrastructure.csproj", "{8A56A65D-69B3-4BD4-B25A-A3B48D99900C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Application", "POS.Application\POS.Application.csproj", "{7BE3EE3C-570C-48DC-A4BD-92C1A9BDF1CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Application", "POS.Application\POS.Application.csproj", "{7BE3EE3C-570C-48DC-A4BD-92C1A9BDF1CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Api", "POS.Api\POS.Api.csproj", "{365D2CC6-8AD1-4BDB-862B-9130775AC34D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Api", "POS.Api\POS.Api.csproj", "{365D2CC6-8AD1-4BDB-862B-9130775AC34D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Uitilities", "POS.Uitilities\POS.Uitilities.csproj", "{E17D6F9D-B03B-4C2C-8377-D4517F3C9D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Utilities", "POS.Uitilities\POS.Utilities.csproj", "{E17D6F9D-B03B-4C2C-8377-D4517F3C9D48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS.Test", "POS.Test\POS.Test.csproj", "{CCD3AA4F-F1B9-4DD4-9B0A-61EF9DEE289F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POS.Test", "POS.Test\POS.Test.csproj", "{CCD3AA4F-F1B9-4DD4-9B0A-61EF9DEE289F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

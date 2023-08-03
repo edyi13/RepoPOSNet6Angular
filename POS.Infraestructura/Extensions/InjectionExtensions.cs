@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using POS.Infrastructure.Persistences.Context;
+using POS.Infrastructure.Persistences.Interfaces;
+using POS.Infrastructure.Persistences.Repositories;
 
 namespace POS.Infrastructure.Extensions
 {
@@ -16,6 +18,8 @@ namespace POS.Infrastructure.Extensions
                     configuration.GetConnectionString("PosConnection"), 
                     b => b.MigrationsAssembly(assembly)), 
                 ServiceLifetime.Transient);
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
