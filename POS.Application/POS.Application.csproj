@@ -7,11 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commons\" />
     <Folder Include="Extensions\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Mappers\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
