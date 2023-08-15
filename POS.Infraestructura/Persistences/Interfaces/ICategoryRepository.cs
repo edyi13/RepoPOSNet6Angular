@@ -10,7 +10,7 @@ namespace POS.Infrastructure.Persistences.Interfaces
         Task<IEnumerable<Category>> ListSelectCategories();
         Task<Category> CategoryById(int id);
         Task<bool> RegisterCategory(Category category);
-        Task<bool> EditCayegory(Category category);
-        Task<bool> RemoveCayegory(int id);
+        Task<bool> EditCategory(Category category);
+        Task<bool> RemoveCategory(int id);
     }
 }

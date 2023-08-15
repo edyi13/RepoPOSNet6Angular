@@ -4,9 +4,11 @@ using POS.Application.Dtos.Request;
 using POS.Application.Dtos.Response;
 using POS.Application.Interfaces;
 using POS.Application.Validators.Category;
+using POS.Domain.Entities;
 using POS.Infrastructure.Commons.Bases.Request;
 using POS.Infrastructure.Commons.Bases.Response;
 using POS.Infrastructure.Persistences.Interfaces;
+using POS.Utilities.Static;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,34 +30,148 @@ namespace POS.Application.Services
             _validationRules = validationRules ?? throw new ArgumentNullException(nameof(validationRules));
         }
 
-        public Task<BaseResponse<CategoryResponseDto>> GetCategoriesById(int id)
+        public async Task<BaseResponse<BaseEntityResponse<CategoryResponseDto>>> ListCategories(BaseFiltersRequest filters)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<BaseEntityResponse<CategoryResponseDto>>();
+            var categories = await _unitOfWork.Category.ListCategories(filters);
+
+            if (categories is not null)
+            {
+                response.IsSuccess = true;
+                response.Data = _mapper.Map<BaseEntityResponse<CategoryResponseDto>>(categories);
+                response.Message = Replymessage.MESSAGE_QUERY;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
         }
 
-        public Task<BaseResponse<BaseEntityResponse<CategoryResponseDto>>> ListCategories(BaseFiltersRequest filters)
+        public async Task<BaseResponse<IEnumerable<CategorySelectResponseDto>>> ListSelectCategories()
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<IEnumerable<CategorySelectResponseDto>>();
+            var categories = await _unitOfWork.Category.ListSelectCategories();
+
+            if (categories is not null)
+            {
+                response.IsSuccess = true;
+                response.Data = _mapper.Map<IEnumerable<CategorySelectResponseDto>>(categories);
+                response.Message = Replymessage.MESSAGE_QUERY;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
         }
 
-        public Task<BaseResponse<IEnumerable<CategorySelectResponseDto>>> ListSelectCategories(BaseFiltersRequest filters)
+        public async Task<BaseResponse<CategoryResponseDto>> GetCategoryById(int id)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<CategoryResponseDto>();
+            var category = await _unitOfWork.Category.CategoryById(id);
+
+            if (category is not null)
+            {
+                response.IsSuccess = true;
+                response.Data = _mapper.Map<CategoryResponseDto>(category);
+                response.Message = Replymessage.MESSAGE_QUERY;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
+            }
+            return response;
         }
 
-        public Task<BaseResponse<bool>> RegisterCategory(CategoryRequestDto requestDto)
+        public async Task<BaseResponse<bool>> RegisterCategory(CategoryRequestDto requestDto)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<bool>();
+            var validationResult = await _validationRules.ValidateAsync(requestDto);
+
+            if (!validationResult.IsValid)
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_VALIDATE;
+                response.Errors = validationResult.Errors;
+                return response;
+            }
+
+            var category = _mapper.Map<Category>(requestDto);
+            response.Data = await _unitOfWork.Category.RegisterCategory(category);
+
+            if(response.Data) 
+            { 
+                response.IsSuccess = true;
+                response.Message = Replymessage.MESSAGE_SAVE;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_FAILED;
+            }
+
+            return response;
+
         }
 
-        public Task<BaseResponse<bool>> UpdateCategory(int id, CategoryRequestDto requestDto)
+        public async Task<BaseResponse<bool>> UpdateCategory(int id, CategoryRequestDto requestDto)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<bool>();
+            var categoryEdit = await GetCategoryById(id);
+
+            if (categoryEdit.Data is null)
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
+            }
+
+            var category = _mapper.Map<Category>(requestDto);
+            category.CategoryId = id;
+            response.Data = await _unitOfWork.Category.EditCategory(category);
+
+            if (response.Data)
+            {
+                response.IsSuccess = true;
+                response.Message = Replymessage.MESSAGE_UPDATE;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_FAILED;
+            }
+
+            return response;
         }
 
-        public Task<BaseResponse<bool>> DeleteCategory(int id)
+        public async Task<BaseResponse<bool>> DeleteCategory(int id)
         {
-            throw new NotImplementedException();
+            var response = new BaseResponse<bool>();
+            var categoryDelete = await GetCategoryById(id);
+
+            if (categoryDelete.Data is null)
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
+            }
+
+            response.Data = await _unitOfWork.Category.RemoveCategory(id);
+
+            if (response.Data)
+            {
+                response.IsSuccess = true;
+                response.Message = Replymessage.MESSAGE_DELETE;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.Message = Replymessage.MESSAGE_FAILED;
+            }
+
+            return response;
         }
 
     }

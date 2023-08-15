@@ -14,8 +14,8 @@ namespace POS.Application.Interfaces
     public interface ICategoryApplication
     {
         Task<BaseResponse<BaseEntityResponse<CategoryResponseDto>>> ListCategories(BaseFiltersRequest filters);
-        Task<BaseResponse<IEnumerable<CategorySelectResponseDto>>> ListSelectCategories(BaseFiltersRequest filters);
-        Task<BaseResponse<CategoryResponseDto>> GetCategoriesById(int id);
+        Task<BaseResponse<IEnumerable<CategorySelectResponseDto>>> ListSelectCategories();
+        Task<BaseResponse<CategoryResponseDto>> GetCategoryById(int id);
         Task<BaseResponse<bool>>RegisterCategory(CategoryRequestDto requestDto);
         Task<BaseResponse<bool>>UpdateCategory(int id, CategoryRequestDto requestDto);
         Task<BaseResponse<bool>> DeleteCategory(int id);

@@ -94,7 +94,7 @@ namespace POS.Infrastructure.Persistences.Repositories
             return recordsAffected > 0;
         }
 
-        public async Task<bool> EditCayegory(Category category)
+        public async Task<bool> EditCategory(Category category)
         {
             category.AuditUpdateUser = 1;
             category.AuditUpdateDate = DateTime.Now;
@@ -108,7 +108,7 @@ namespace POS.Infrastructure.Persistences.Repositories
             return recordsAffected > 0;
         }
 
-        public async Task<bool> RemoveCayegory(int id)
+        public async Task<bool> RemoveCategory(int id)
         {
             var category = await _context.Categories.AsNoTracking().SingleOrDefaultAsync(x => x.CategoryId.Equals(id));
             category!.AuditDeleteUser = 1;
