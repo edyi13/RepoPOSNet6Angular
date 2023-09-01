@@ -8,22 +8,15 @@ using POS.Utilities.Static;
 
 namespace POS.Infrastructure.Persistences.Repositories
 {
-    public class CategoryRepository: GenericReposiroty<Category>, ICategoryRepository
+    public class CategoryRepository: GenericRepository<Category>, ICategoryRepository
     {
-        private readonly PosContext _context;
-
-        public CategoryRepository(PosContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        public CategoryRepository(PosContext context): base(context){}
 
         public async Task<BaseEntityResponse<Category>> ListCategories(BaseFiltersRequest filters)
         {
             var response = new BaseEntityResponse<Category>();
 
-            var categories = (from c in _context.Categories
-                               where c.AuditDeleteUser == null && c.AuditDeleteDate == null
-                               select c).AsNoTracking().AsQueryable();
+            var categories = GetEntityQuery(x => x.AuditDeleteUser == null && x.AuditDeleteDate == null);
 
             if(filters.NumFilter is not null && !string.IsNullOrEmpty(filters.TextFilter)) 
             {
@@ -51,74 +44,12 @@ namespace POS.Infrastructure.Persistences.Repositories
                                              );
             }
 
-            if (filters.Sort is null) filters.Sort = "CategoryId";
+            if (filters.Sort is null) filters.Sort = "Id";
 
             response.TotalRecords = await categories.CountAsync();
             response.Items = await Ordering(filters, categories, !(bool)filters.Download!).ToListAsync();
             return response;
         }
-
-        public async Task<IEnumerable<Category>> ListSelectCategories()
-        {
-            var categories = await _context.Categories
-                .Where(x => 
-                            x.State.Equals((int) StateTypes.Active) && 
-                            x.AuditDeleteUser == null && 
-                            x.AuditDeleteDate == null
-                       ).AsNoTracking()
-                        .ToListAsync();
-
-            return categories;
-        }
-
-        public async Task<Category> CategoryById(int id)
-        {
-            var category = await _context.Categories
-                .AsNoTracking().FirstOrDefaultAsync(x =>
-                                                         x.CategoryId.Equals(id) &&
-                                                         x.AuditDeleteUser == null &&
-                                                         x.AuditDeleteDate == null);
-
-            return category!;
-        }
-
-        public async Task<bool> RegisterCategory(Category category)
-        {
-            category.AuditCreateUser = 1;
-            category.AuditCreateDate = DateTime.Now;
-
-            await _context.AddAsync(category);
-
-            var recordsAffected = await _context.SaveChangesAsync();
-
-            return recordsAffected > 0;
-        }
-
-        public async Task<bool> EditCategory(Category category)
-        {
-            category.AuditUpdateUser = 1;
-            category.AuditUpdateDate = DateTime.Now;
-
-            _context.Update(category);
-            _context.Entry(category).Property(x => x.AuditCreateUser).IsModified = false;
-            _context.Entry(category).Property(x => x.AuditCreateDate).IsModified = false;
-
-            var recordsAffected = await _context.SaveChangesAsync();
-
-            return recordsAffected > 0;
-        }
-
-        public async Task<bool> RemoveCategory(int id)
-        {
-            var category = await _context.Categories.AsNoTracking().SingleOrDefaultAsync(x => x.CategoryId.Equals(id));
-            category!.AuditDeleteUser = 1;
-            category.AuditDeleteDate = DateTime.Now;
-
-            _context.Update(category);
-
-            var recordsAffected = await _context.SaveChangesAsync();
-
-            return recordsAffected > 0;
-        }
+       
     }
 }

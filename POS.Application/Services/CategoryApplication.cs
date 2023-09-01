@@ -52,7 +52,7 @@ namespace POS.Application.Services
         public async Task<BaseResponse<IEnumerable<CategorySelectResponseDto>>> ListSelectCategories()
         {
             var response = new BaseResponse<IEnumerable<CategorySelectResponseDto>>();
-            var categories = await _unitOfWork.Category.ListSelectCategories();
+            var categories = await _unitOfWork.Category.GetAllAsync();
 
             if (categories is not null)
             {
@@ -71,7 +71,7 @@ namespace POS.Application.Services
         public async Task<BaseResponse<CategoryResponseDto>> GetCategoryById(int id)
         {
             var response = new BaseResponse<CategoryResponseDto>();
-            var category = await _unitOfWork.Category.CategoryById(id);
+            var category = await _unitOfWork.Category.GetByIdAsync(id);
 
             if (category is not null)
             {
@@ -101,7 +101,7 @@ namespace POS.Application.Services
             }
 
             var category = _mapper.Map<Category>(requestDto);
-            response.Data = await _unitOfWork.Category.RegisterCategory(category);
+            response.Data = await _unitOfWork.Category.RegisterAsync(category);
 
             if(response.Data) 
             { 
@@ -130,8 +130,8 @@ namespace POS.Application.Services
             }
 
             var category = _mapper.Map<Category>(requestDto);
-            category.CategoryId = id;
-            response.Data = await _unitOfWork.Category.EditCategory(category);
+            category.Id = id;
+            response.Data = await _unitOfWork.Category.EditAsync(category);
 
             if (response.Data)
             {
@@ -158,7 +158,7 @@ namespace POS.Application.Services
                 response.Message = Replymessage.MESSAGE_QUERY_EMPTY;
             }
 
-            response.Data = await _unitOfWork.Category.RemoveCategory(id);
+            response.Data = await _unitOfWork.Category.DeleteAsync(id);
 
             if (response.Data)
             {
